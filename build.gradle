@@ -17,7 +17,6 @@ configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
-	gradlePlugin
 }
 
 repositories {
@@ -32,27 +31,8 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-
-	gradlePlugin 'org.springframework.boot:spring-boot-starter-data-jpa'
-	gradlePlugin 'org.springframework.boot:spring-boot-starter-web'
-	gradlePlugin 'org.projectlombok:lombok'
-	gradlePlugin 'com.h2database:h2'
-	gradlePlugin 'org.springframework.boot:spring-boot-starter-test'
-	gradlePlugin 'org.junit.platform:junit-platform-launcher'
-	gradlePlugin 'org.springframework.boot:spring-boot-gradle-plugin:3.4.4'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
 }
-
-def libDir = 'lib'
-task deleteDeps(type:Delete){
-	delete libDir
-}
-
-task copyDeps(type: Copy, dependsOn: deleteDeps) {
-	from configurations.gradlePlugin
-	into libDir
-}
-
