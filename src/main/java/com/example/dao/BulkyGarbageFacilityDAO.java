@@ -7,27 +7,18 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BulkyGarbageFacilityDAO {
-    private static final String JDBC_URL = "jdbc:h2:~/test";
-    private static final String JDBC_USER = "sa";
-    private static final String JDBC_PASSWORD = "";
+import static com.example.config.DatabaseConfig.*;
 
-    public static void main(String[] args) {
-        try (Connection connection = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD)) {
-            insertFacility(connection, 35, 139, "Tokyo", "Facility A");
-            insertFacility(connection, 34, 135, "Osaka", "Facility B");
-            List<BulkyGarbageFacility> facilities = fetchFacilities(connection);
-            facilities.forEach(System.out::println);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+public class BulkyGarbageFacilityDAO {
+
+    public static Connection conn() throws SQLException {
+        return DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
     }
 
-    private static void insertFacility(Connection connection, int latitude, int longitude, String prefecture, String facilityName) throws SQLException {
+    public static void insertFacility(Connection connection, int latitude, int longitude, String prefecture, String facilityName) throws SQLException {
         String insertSQL = "INSERT INTO BULKY_GARBAGE_FACILITIES (LATITUDE, LONGITUDE, PREFECTURE, FACILITY_NAME) VALUES (?, ?, ?, ?)";
         try (PreparedStatement preparedStatement = connection.prepareStatement(insertSQL)) {
             preparedStatement.setInt(1, latitude);
@@ -38,14 +29,14 @@ public class BulkyGarbageFacilityDAO {
         }
     }
 
-    private static List<BulkyGarbageFacility> fetchFacilities(Connection connection) throws SQLException {
+    public static List<BulkyGarbageFacility> fetchFacilities(Connection connection) throws SQLException {
         String selectSQL = "SELECT * FROM BULKY_GARBAGE_FACILITIES";
         List<BulkyGarbageFacility> facilities = new ArrayList<>();
-        try (Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(selectSQL)) {
+        try (PreparedStatement ps = connection.prepareStatement(selectSQL);
+             ResultSet resultSet = ps.executeQuery()) {
             while (resultSet.next()) {
-                int latitude = resultSet.getInt("LATITUDE");
-                int longitude = resultSet.getInt("LONGITUDE");
+                float latitude = resultSet.getFloat("LATITUDE");
+                float longitude = resultSet.getFloat("LONGITUDE");
                 String prefecture = resultSet.getString("PREFECTURE");
                 String facilityName = resultSet.getString("FACILITY_NAME");
                 BulkyGarbageFacility facility = new BulkyGarbageFacility(latitude, longitude, prefecture, facilityName);

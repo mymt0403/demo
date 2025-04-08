@@ -1,16 +1,18 @@
 package com.example.demo;
 
+import com.example.dao.BulkyGarbageFacilityDAO;
 import com.google.maps.GeoApiContext;
-import com.google.maps.GeocodingApi;
-import com.google.maps.model.GeocodingResult;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.sql.Connection;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 @RestController
@@ -39,8 +41,14 @@ public class DemoApplication {
 	}
 
 	@GetMapping("/maps")
-	public String geocode(@RequestParam String address) throws Exception {
-		GeocodingResult[] results = GeocodingApi.geocode(context, address).await();
-		return results[0].formattedAddress;
+	public String fetchData() throws Exception {
+		Connection conn = BulkyGarbageFacilityDAO.conn();
+		List<BulkyGarbageFacility> facilityList =  BulkyGarbageFacilityDAO.fetchFacilities(conn);
+
+		List<String> facilities = new ArrayList<>();
+
+		facilityList.forEach(fac -> facilities.add(fac.getFacilityName()));
+
+		return facilities.toString();
 	}
 }
