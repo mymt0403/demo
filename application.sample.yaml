@@ -1,2 +1,24 @@
+# Thymeleaf setting
+spring:
+  thymeleaf:
+    enabled: true
+    prefix: classpath:/templates/
+    spring:
+      thymeleaf:
+        suffix: .html
+
+# H2Database setting
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: your username
+    password: your password
+  h2:
+    console:
+      enabled: true
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+
+# GoogleMap Api Key
 api:
   key: your api key token

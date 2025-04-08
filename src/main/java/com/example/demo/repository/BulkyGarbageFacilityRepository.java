@@ -1,6 +1,6 @@
-package com.example.dao;
+package com.example.demo.repository;
 
-import com.example.demo.BulkyGarbageFacility;
+import com.example.demo.model.BulkyGarbageFacility;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,9 +10,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.config.DatabaseConfig.*;
+import static com.example.demo.config.DatabaseConfig.*;
 
-public class BulkyGarbageFacilityDAO {
+public class BulkyGarbageFacilityRepository {
 
     public static Connection conn() throws SQLException {
         return DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
