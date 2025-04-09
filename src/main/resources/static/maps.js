@@ -41,25 +41,9 @@ async function initMap() {
             lng: position.coords.longitude,
           };
 
-          // A marker using a Font Awesome icon for the glyph.
-          const icon = document.createElement("div");
-          icon.innerHTML = '<i class="fa fa-pizza-slice fa-lg"></i>';
-
-          const faPin = new PinElement({
-            glyph: icon,
-            glyphColor: "#ff8300",
-            background: "#FFD514",
-            borderColor: "#ff8300",
-          });
-
-          // 現在地をマークする
-          const geolocationMarker = new AdvancedMarkerElement({
-            map,
-            position: pos,
-            content: faPin.element,
-            title: "your location",
-          });
-
+          geowindow.setPosition(pos);
+          geowindow.setContent("Location found.");
+          geowindow.open(map);
           map.setCenter(pos);
         },
         () => {
@@ -102,12 +86,12 @@ async function initMap() {
   });
 }
 
-function handleLocationError(map, browserHasGeolocation, geowindow, pos) {
-  geowindow.setPosition(pos);
-  geowindow.setContent(
+function handleLocationError(map, browserHasGeolocation, window, pos) {
+  window.setPosition(pos);
+  window.setContent(
     browserHasGeolocation
       ? "Error: The Geolocation service failed."
       : "Error: Your browser doesn't support geolocation.",
   );
-  geowindow.open(map);
+  window.open(map);
 }
