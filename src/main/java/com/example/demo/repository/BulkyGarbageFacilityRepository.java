@@ -29,18 +29,20 @@ public class BulkyGarbageFacilityRepository {
         }
     }
 
-    public static List<BulkyGarbageFacility> fetchFacilities(Connection connection) throws SQLException {
-        String selectSQL = "SELECT * FROM BULKY_GARBAGE_FACILITIES";
+    public static List<BulkyGarbageFacility> fetchFacilities(Connection connection, int id) throws SQLException {
+        String selectSQL = "SELECT LATITUDE, LATITUDE, P.PREFECTURE_NAME, FACILITY_NAME FROM BULKY_GARBAGE_FACILITIES AS BGF INNER JOIN PREFECTURES AS P ON P.NUMBER = BGF.PREFECTURE WHERE P.NUMBER = ?";
         List<BulkyGarbageFacility> facilities = new ArrayList<>();
-        try (PreparedStatement ps = connection.prepareStatement(selectSQL);
-             ResultSet resultSet = ps.executeQuery()) {
-            while (resultSet.next()) {
-                float latitude = resultSet.getFloat("LATITUDE");
-                float longitude = resultSet.getFloat("LONGITUDE");
-                String prefecture = resultSet.getString("PREFECTURE");
-                String facilityName = resultSet.getString("FACILITY_NAME");
-                BulkyGarbageFacility facility = new BulkyGarbageFacility(latitude, longitude, prefecture, facilityName);
-                facilities.add(facility);
+        try (PreparedStatement ps = connection.prepareStatement(selectSQL)){
+            ps.setInt(1, id);
+            try(ResultSet resultSet = ps.executeQuery()) {
+                while (resultSet.next()) {
+                    float latitude = resultSet.getFloat("LATITUDE");
+                    float longitude = resultSet.getFloat("LONGITUDE");
+                    String prefecture = resultSet.getString("PREFECTURE");
+                    String facilityName = resultSet.getString("FACILITY_NAME");
+                    BulkyGarbageFacility facility = new BulkyGarbageFacility(latitude, longitude, prefecture, facilityName);
+                    facilities.add(facility);
+                }
             }
         }
         return facilities;

@@ -1,0 +1,11 @@
+#mySelect {
+    width: 200px; /* セレクトボックスの幅を200pxに設定 */
+    height: 40px; /* セレクトボックスの高さを40pxに設定 */
+    font-size: 16px; /* フォントサイズを16pxに設定 */
+}
+
+button {
+    width: 100px; /* ボタンの幅を100pxに設定 */
+    height: 40px; /* ボタンの高さを40pxに設定 */
+    font-size: 16px; /* フォントサイズを16pxに設定 */
+}

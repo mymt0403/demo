@@ -2,13 +2,23 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>粗大ごみ持込可能施設 一覧</title>
-    <script th:src="@{'https://maps.googleapis.com/maps/api/js?key=' + \${apiKey} + '&callback=initMap&libraries=marker'}" defer></script>
+    <script th:src="@{'https://maps.googleapis.com/maps/api/js?key=' + \${apiKey} + '&callback=initMap&libraries=marker'}" async defer></script>
     <script src="https://use.fontawesome.com/releases/v6.2.0/js/all.js"></script>
-    <script th:src="@{/maps.js}" charset="utf-8"></script>
+    <script th:src="@{/js/maps.js}" charset="utf-8"></script>
+    <link th:href="@{/css/styles.css}" rel="stylesheet">
 </head>
-
 <body>
     <h1>粗大ごみ持込可能施設 一覧</h1>
+
+    <select id="mySelect">
+        <option value="1">福岡県</option>
+        <option value="2">大分県</option>
+        <option value="3">鹿児島県</option>
+        <option value="4">宮崎県</option>
+        <option value="5">長崎県</option>
+    </select>
+    <button onclick="fetchData()">search</button>
+    <div id="content"></div>
     <div id="map" style="height: 700px; width: 65%;"></div>
 </body>
 </html>
