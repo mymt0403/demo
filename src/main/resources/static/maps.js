@@ -3,6 +3,7 @@ async function initMap() {
   const tokyo = { lat: 35.68168615415703, lng: 139.76705199614096 };
   const { Map } = await google.maps.importLibrary("maps");
   const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+  const { PinElement } = await google.maps.importLibrary("marker");
   const map = new Map(document.getElementById("map"), {
     center: tokyo,
     zoom: 10,
@@ -15,7 +16,7 @@ async function initMap() {
     '<h1 id="firstHeading" class="firstHeading">東京駅</h1>' +
     '<div id="bodyContent">' +
     '<p>詳細： <a href="https://www.tokyoinfo.com/">' +
-    "https://en.wikipedia.org/w/index.php?title=Uluru</a></p>" +
+    "https://www.tokyoinfo.com/</a></p>" +
     "</div>" +
     "</div>";
 
@@ -41,9 +42,25 @@ async function initMap() {
             lng: position.coords.longitude,
           };
 
-          geowindow.setPosition(pos);
-          geowindow.setContent("Location found.");
-          geowindow.open(map);
+          // A marker using a Font Awesome icon for the glyph.
+          const icon = document.createElement("div");
+          icon.innerHTML = '<i class="fa-solid fa-user"></i>';
+
+          const faPin = new PinElement({
+            glyph: icon,
+            glyphColor: "#000000",
+            background: "#FF6633",
+            borderColor: "#FF0000",
+          });
+
+          // 現在地をマークする
+          const geolocationMarker = new AdvancedMarkerElement({
+            map,
+            position: pos,
+            content: faPin.element,
+            title: "your location",
+          });
+
           map.setCenter(pos);
         },
         () => {
