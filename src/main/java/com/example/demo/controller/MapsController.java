@@ -13,7 +13,6 @@ public class MapsController {
     @GetMapping("/")
     public String hello(Model model) {
         model.addAttribute("apiKey", apiKey);
-        System.out.println(apiKey);
         return "index";
     }
 }
