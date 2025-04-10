@@ -17,10 +17,17 @@ public class MapsController {
     @Value("${api.key}")
     private String apiKey;
 
-    @GetMapping("/api/data")
+    @GetMapping("/")
     public String init(Model model) {
         model.addAttribute("apiKey", apiKey);
         return "index";
+    }
+
+    @GetMapping("/api/center/{id}")
+    public ResponseEntity<List<Float>> fetchCenter(Model model, @PathVariable("id") int id) throws SQLException {
+        Connection conn = BulkyGarbageFacilityRepository.conn();
+        List<Float> centerPosition = BulkyGarbageFacilityRepository.fetchCenter(conn, id);
+        return ResponseEntity.ok(centerPosition);
     }
 
     @GetMapping("/api/data/{id}")

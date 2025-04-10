@@ -30,7 +30,7 @@ public class BulkyGarbageFacilityRepository {
     }
 
     public static List<BulkyGarbageFacility> fetchFacilities(Connection connection, int id) throws SQLException {
-        String selectSQL = "SELECT LATITUDE, LATITUDE, P.PREFECTURE_NAME, FACILITY_NAME FROM BULKY_GARBAGE_FACILITIES AS BGF INNER JOIN PREFECTURES AS P ON P.NUMBER = BGF.PREFECTURE WHERE P.NUMBER = ?";
+        String selectSQL = "SELECT LATITUDE, LONGITUDE, P.PREFECTURE_NAME, FACILITY_NAME FROM BULKY_GARBAGE_FACILITIES AS BGF INNER JOIN PREFECTURES AS P ON P.NUMBER = BGF.PREFECTURE_NO WHERE P.NUMBER = ?";
         List<BulkyGarbageFacility> facilities = new ArrayList<>();
         try (PreparedStatement ps = connection.prepareStatement(selectSQL)){
             ps.setInt(1, id);
@@ -38,7 +38,7 @@ public class BulkyGarbageFacilityRepository {
                 while (resultSet.next()) {
                     float latitude = resultSet.getFloat("LATITUDE");
                     float longitude = resultSet.getFloat("LONGITUDE");
-                    String prefecture = resultSet.getString("PREFECTURE");
+                    String prefecture = resultSet.getString("PREFECTURE_NAME");
                     String facilityName = resultSet.getString("FACILITY_NAME");
                     BulkyGarbageFacility facility = new BulkyGarbageFacility(latitude, longitude, prefecture, facilityName);
                     facilities.add(facility);
@@ -46,5 +46,22 @@ public class BulkyGarbageFacilityRepository {
             }
         }
         return facilities;
+    }
+
+    public static List<Float> fetchCenter(Connection connection, int id) throws SQLException{
+        String selectSQL = "SELECT DEFAULT_LATITUDE, DEFAULT_LONGITUDE FROM PREFECTURES WHERE NUMBER = ?";
+        List<Float> centerPosition = new ArrayList<>();
+        try (PreparedStatement ps = connection.prepareStatement(selectSQL)){
+            ps.setInt(1, id);
+            try(ResultSet resultSet = ps.executeQuery()) {
+                while (resultSet.next()) {
+                    float defaultLatitude = resultSet.getFloat("DEFAULT_LATITUDE");
+                    float defaultLongitude = resultSet.getFloat("DEFAULT_LONGITUDE");
+                    centerPosition.add(defaultLatitude);
+                    centerPosition.add(defaultLongitude);
+                }
+            }
+        }
+        return centerPosition;
     }
 }
