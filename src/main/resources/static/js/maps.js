@@ -1,13 +1,11 @@
-let map, faPin, userLocationMarker, infoWindow;
+let map;
 
 async function initMap() {
-    const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
-    const { PinElement } = await google.maps.importLibrary("marker");
-    const { MAP } = await google.maps.importLibrary("map");
-
+    // import library
+    // Request needed libraries.
+    const { Map } = await google.maps.importLibrary("maps");
     map = new google.maps.Map(document.getElementById("map"), {
-        center: { lat: 35.68168615415703, lng: 139.76705199614096 },
-        zoom: 10,
+        zoom: 9,
         mapId: "4504f8b37365c3d0",
     });
 }
@@ -17,26 +15,24 @@ function fetchData() {
     const selectBox = document.getElementById('mySelect');
     const selectedValue = selectBox.value;
 
-    // 選択された都道府県を表示するための中心座標を取得して表示する
     fetch(`/api/center/\${selectedValue}`)
         .then(response => response.json())
-        .then(data => moveCenter(data));
+        .then(data =>
+            map = new google.maps.Map(document.getElementById("map"), {
+                center: {
+                    lat: data.shift(),
+                    lng: data.shift(),
+                },
+                zoom: 9,
+                mapId: "4504f8b37365c3d0",
+            })
+        );
 
-    // 選択された都道府県の対象施設の座標を取得してピンを指す
     fetch(`/api/data/\${selectedValue}`)
         .then(response => response.json())
         .then(data => putPins(data));
 }
 
-function moveCenter(data) {
-    map = new google.maps.Map(document.getElementById("map"), {
-        center: { lat: data.shift(), lng: data.shift() },
-        zoom: 10,
-        mapId: "4504f8b37365c3d0",
-    });
-}
-
-// 対象施設のピンを表示
 async function putPins(pins) {
     // import library
     const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
@@ -51,14 +47,58 @@ async function putPins(pins) {
     });
 }
 
-// 現在地取得に失敗した場合、マップにエラー文を表示
-function handleLocationError(map, browserHasGeolocation, window, pos) {
-    window.setPosition(pos);
-    window.setContent(
-        browserHasGeolocation
-        ? "Error: The Geolocation service failed."
-        : "Error: Your browser doesn't support geolocation.",
-    );
-    window.open(map);
+function showUserLocation() {
+    const { AdvancedMarkerElement } = google.maps.importLibrary("marker");
+    const { PinElement } = google.maps.importLibrary("marker");
+    const geowindow = new google.maps.InfoWindow();
+
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const pos = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude,
+                };
+
+                // A marker using a Font Awesome icon for the glyph.
+                const icon = document.createElement("div");
+                icon.innerHTML = '<i class="fa-solid fa-user"></i>';
+
+                const faPin = new google.maps.marker.PinElement({
+                    glyph: icon,
+                    glyphColor: "#000000",
+                    background: "#FF6633",
+                    borderColor: "#FF0000",
+                });
+
+                // 現在地をマークする
+                const geolocationMarker = new google.maps.marker.AdvancedMarkerElement({
+                    map,
+                    position: pos,
+                    content: faPin.element,
+                    title: "your location",
+                });
+
+              map.setCenter(pos);
+            },
+            () => {
+              handleLocationError();
+            },
+        );
+    } else {
+        handleLocationError();
+    }
 }
 
+function handleLocationError() {
+    const errorMessageElement = document.getElementById("errorMessage");
+    errorMessageElement.innerHTML = `
+        <p>位置情報が取得できませんでした。<br>
+        位置情報を表示させる場合はブラウザの設定から位置情報へのアクセスを許可してください。</p>`;
+    errorMessageElement.style.display = "inline";
+}
+
+// ページが読み込まれたときにデフォルトでセレクトボックス1の内容を表示
+window.onload = function() {
+    fetchData();
+};

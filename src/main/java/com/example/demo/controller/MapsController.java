@@ -31,7 +31,7 @@ public class MapsController {
     }
 
     @GetMapping("/api/data/{id}")
-    public ResponseEntity<List<BulkyGarbageFacility>> display(Model model, @PathVariable("id") int id) throws SQLException {
+    public ResponseEntity<List<BulkyGarbageFacility>> fetchData(Model model, @PathVariable("id") int id) throws SQLException {
         Connection conn = BulkyGarbageFacilityRepository.conn();
         List<BulkyGarbageFacility> dataList = BulkyGarbageFacilityRepository.fetchFacilities(conn, id);
         return ResponseEntity.ok(dataList);
