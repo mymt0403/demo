@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>粗大ごみ持込可能施設 一覧</title>
+    <script th:src="@{'https://maps.googleapis.com/maps/api/js?key=' + \${apiKey} + '&callback=initMap&libraries=marker&loading=async'}" async defer></script>
+    <script src="https://use.fontawesome.com/releases/v6.2.0/js/all.js"></script>
+    <script th:src="@{/js/maps.js}" charset="utf-8"></script>
+    <link th:href="@{/css/styles.css}" rel="stylesheet">
+</head>
+<body>
+    <section class="title">
+        <h1>粗大ごみ持込可能施設 一覧</h1>
+    </section>
+    <section class="function">
+        <div class="container">
+            <select id="mySelect">
+                <option value="40">福岡県</option>
+                <option value="41">佐賀県</option>
+                <option value="42">長崎県</option>
+                <option value="43">熊本県</option>
+                <option value="44">大分県</option>
+                <option value="45">宮崎県</option>
+                <option value="46">鹿児島県</option>
+                <option value="47">沖縄県</option>
+            </select>
+            <button class="button1" onclick="fetchData()">search</button>
+            <button class="button2" onclick="showUserLocation()">display your location</button>
+        </div>
+        <div class="error" style="vertical-align: top;">
+            <span id="errorMessage" class="error-message"></span>
+        </div>
+    </section>
+    <section class="googleMap">
+        <div id="content"></div>
+        <div id="map" style="height: 700px; width: 65%;"></div>
+    </section>
+</body>
+</html>
