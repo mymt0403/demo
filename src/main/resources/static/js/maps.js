@@ -1,8 +1,6 @@
 let map;
 
 async function initMap() {
-    // import library
-    // Request needed libraries.
     const { Map } = await google.maps.importLibrary("maps");
     map = new google.maps.Map(document.getElementById("map"), {
         zoom: 9,
@@ -11,7 +9,7 @@ async function initMap() {
 }
 
 function fetchData() {
-    // mySelectの項目(value)を取得する
+    /** mySelectの項目(value)を取得する */
     const selectBox = document.getElementById('mySelect');
     const selectedValue = selectBox.value;
 
@@ -34,7 +32,6 @@ function fetchData() {
 }
 
 async function putPins(pins) {
-    // import library
     const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
     pins.forEach(pin => {
         new AdvancedMarkerElement({
@@ -60,7 +57,7 @@ function showUserLocation() {
                     lng: position.coords.longitude,
                 };
 
-                // A marker using a Font Awesome icon for the glyph.
+               /**  Font Awesome のアイコンを使用する */
                 const icon = document.createElement("div");
                 icon.innerHTML = '<i class="fa-solid fa-user"></i>';
 
@@ -71,7 +68,7 @@ function showUserLocation() {
                     borderColor: "#FF0000",
                 });
 
-                // 現在地をマークする
+                /** 現在地をマークする */
                 const geolocationMarker = new google.maps.marker.AdvancedMarkerElement({
                     map,
                     position: pos,
@@ -98,7 +95,6 @@ function handleLocationError() {
     errorMessageElement.style.display = "inline";
 }
 
-// ページが読み込まれたときにデフォルトでセレクトボックス1の内容を表示
 window.onload = function() {
     fetchData();
 };

@@ -10,12 +10,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.demo.config.DatabaseConfig.*;
-
 public class BulkyGarbageFacilityRepository {
 
-    public static Connection conn() throws SQLException {
-        return DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
+    public static Connection conn(String db_url, String db_user, String db_password) throws SQLException {
+        return DriverManager.getConnection(db_url, db_user, db_password);
     }
 
     public static void insertFacility(Connection connection, int latitude, int longitude, String prefecture, String facilityName) throws SQLException {
