@@ -1,0 +1,38 @@
+.container {
+    gap: 10px;
+    width: 100%;
+    max-width: 960px;
+    display: flex;
+    align-items: left;
+}
+
+#mySelect {
+    width: 150px;
+    height: 40px;
+    font-size: 16px;
+}
+
+.button1 {
+    padding: 5px 10px;
+    width: 100px;
+    height: 40px;
+    font-size: 16px;
+}
+
+.button2 {
+    padding: 5px 10px;
+    width: 200px;
+    height: 40px;
+    font-size: 16px;
+}
+
+.error-message {
+    display: none;
+    color: red;
+    font-size: 14px;
+}
+
+.googleMap {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
