@@ -35,14 +35,6 @@ public class PrefectureServiceImpl implements PrefectureService {
         List<Float> centerPosition = new ArrayList<>();
         Float defaultLatitude = prefecture.getDefaultLatitude();
         Float defaultLongitude = prefecture.getDefaultLongitude();
-//        if (defaultLatitude != null || defaultLongitude != null) {
-//            centerPosition.add(prefecture.getDefaultLatitude());
-//            centerPosition.add(prefecture.getDefaultLongitude());
-//        } else {
-//            // 値が取得できなかった場合は東京の座標を返す
-//            centerPosition.add(tokyoLatitude);
-//            centerPosition.add(tokyoLongitude);
-//        }
         centerPosition.add(defaultLatitude);
         centerPosition.add(defaultLongitude);
         return centerPosition;
