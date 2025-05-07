@@ -21,6 +21,7 @@ public class BulkyGarbageFacility {
     @Column(name = "FACILITY_NAME")
     private String facilityName; // 施設名
 
+    // 循環参照によるStackOverFlowを防止
     @Override
     public String toString() {
         return "BulkyGarbageFacility{" +
