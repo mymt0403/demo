@@ -10,7 +10,7 @@ import java.io.Serializable;
 @Embeddable
 public class BulkyGarbageFacilityPK implements Serializable {
     @Column(name = "LATITUDE")
-    private float latitude;
+    private float latitude; // 緯度
     @Column(name = "LONGITUDE")
-    private float longitude;
+    private float longitude; // 経度
 }

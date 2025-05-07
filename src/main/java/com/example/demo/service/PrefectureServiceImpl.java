@@ -24,6 +24,7 @@ public class PrefectureServiceImpl implements PrefectureService {
     public List<Float> fetchCenterPosition(int prefectureNo) {
         Optional<Prefecture> prefecture = prefectureRepository.findById(prefectureNo);
         List<Float> centerPosition = new ArrayList<>();
+        // 取得した都道府県情報から緯度と経度のみを取り出す
         prefecture.ifPresentOrElse(x ->{
             centerPosition.add(x.getDefaultLatitude());
             centerPosition.add(x.getDefaultLongitude());
