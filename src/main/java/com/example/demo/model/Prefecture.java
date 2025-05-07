@@ -22,14 +22,4 @@ public class Prefecture {
     // prefecture の1レコードに対して facility が複数レコード紐づく(1対多の関係)
     @OneToMany(mappedBy = "prefecture", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BulkyGarbageFacility> facilities = new ArrayList<>();
-
-    @Override
-    public String toString() {
-        return "Prefecture{" +
-                    "number=" + number + "," +
-                    "prefectureName=" + prefectureName + "," +
-                    "defaultLatitude=" + defaultLatitude + "," +
-                    "defaultLongitude=" + defaultLongitude +
-                "}";
-    }
 }

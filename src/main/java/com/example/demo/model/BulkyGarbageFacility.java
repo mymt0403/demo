@@ -13,6 +13,7 @@ public class BulkyGarbageFacility {
     @Id
     private float longitude; // 経度
 
+    // facility の複数レコードに対して prefecture は1レコード紐づく(多対1の関係)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PREFECTURE_NO")
     private Prefecture prefecture;
