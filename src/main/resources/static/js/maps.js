@@ -18,8 +18,8 @@ function fetchData() {
         .then(data =>
             map = new google.maps.Map(document.getElementById("map"), {
                 center: {
-                    lat: data.shift(),
-                    lng: data.shift(),
+                    lat: data.latitude,
+                    lng: data.longitude,
                 },
                 zoom: 9,
                 mapId: "4504f8b37365c3d0",
