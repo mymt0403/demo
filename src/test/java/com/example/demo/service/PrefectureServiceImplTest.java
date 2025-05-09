@@ -3,12 +3,14 @@ package com.example.demo.service;
 import com.example.demo.entity.Prefecture;
 import com.example.demo.model.Position;
 import com.example.demo.repository.PrefectureRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Optional;
 
@@ -25,10 +27,14 @@ class PrefectureServiceImplTest {
     @InjectMocks
     private PrefectureServiceImpl prefectureService;
 
-    @Value("${default.tokyo-lat}")
-    private Float TOKYO_LAT;
-    @Value("${default.tokyo-long}")
-    private Float TOKYO_LONG;
+    private final Float TOKYO_LAT = 35.6816F;
+    private final Float TOKYO_LONG = 139.7670F;
+
+    @BeforeEach
+    void setUp() {
+        ReflectionTestUtils.setField(prefectureService, "tokyoLatitude", TOKYO_LAT);
+        ReflectionTestUtils.setField(prefectureService, "tokyoLongitude", TOKYO_LONG);
+    }
 
     @Test
     public void getCenterPosition_prefectureExists() {
@@ -43,7 +49,7 @@ class PrefectureServiceImplTest {
 
         // Assert
         assertEquals(43.06417f, result.getLatitude());
-        assertEquals(141.34694f, result.getLatitude());
+        assertEquals(141.34694f, result.getLongitude());
     }
 
     @Test
@@ -56,6 +62,6 @@ class PrefectureServiceImplTest {
 
         // Assert
         assertEquals(TOKYO_LAT, result.getLatitude());
-        assertEquals(TOKYO_LONG, result.getLatitude());
+        assertEquals(TOKYO_LONG, result.getLongitude());
     }
 }

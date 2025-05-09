@@ -54,7 +54,7 @@ class MapsControllerTest {
     }
 
     @Test
-    void fetchCenter_returnsCenterPositionFromService() {
+    void fetchCenterPosition_returnsCenterPositionFromService() {
         // Arrange
         int prefectureNo = 1;
         Position mockCenterPosition = new Position(35.0f, 135.0f);
@@ -69,15 +69,15 @@ class MapsControllerTest {
     }
 
     @Test
-    void fetchData_returnsFacilityListFromService() {
+    void searchFacilities_returnFacilityListFromService() {
         // Arrange
         int prefectureNo = 1;
         BulkyGarbageFacilityDTO dto = new BulkyGarbageFacilityDTO();
         List<BulkyGarbageFacilityDTO> mockDataList = List.of(dto);
-        when(bulkyGarbageFacilityService.fetchFacilities(prefectureNo)).thenReturn(mockDataList);
+        when(bulkyGarbageFacilityService.searchFacilities(prefectureNo)).thenReturn(mockDataList);
 
         // Act
-        ResponseEntity<List<BulkyGarbageFacilityDTO>> response = mapsController.fetchData(model, prefectureNo);
+        ResponseEntity<List<BulkyGarbageFacilityDTO>> response = mapsController.searchFacilities(model, prefectureNo);
 
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());

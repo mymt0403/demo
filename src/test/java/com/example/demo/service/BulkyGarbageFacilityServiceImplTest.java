@@ -34,7 +34,7 @@ class BulkyGarbageFacilityServiceImplTest {
     private BulkyGarbageFacilityServiceImpl service;
 
     @Test
-    public void fetchFacilities_emptyList() {
+    public void searchFacilities_emptyList() {
         // Arrange
         Integer prefectureNo = 1;
         List<BulkyGarbageFacility> emptyEntityList = Collections.emptyList();
@@ -44,7 +44,7 @@ class BulkyGarbageFacilityServiceImplTest {
         when(modelMapper.map(eq(emptyEntityList), any(Type.class))).thenReturn(emptyDtoList);
 
         // Act
-        List<BulkyGarbageFacilityDTO> result = service.fetchFacilities(prefectureNo);
+        List<BulkyGarbageFacilityDTO> result = service.searchFacilities(prefectureNo);
 
         // Assert
         assertTrue(result.isEmpty());
@@ -53,7 +53,7 @@ class BulkyGarbageFacilityServiceImplTest {
     }
 
     @Test
-    public void fetchFacilities_oneFacility() {
+    public void searchFacilities_oneFacility() {
         // Arrange
         Integer prefectureNo = 2;
 
@@ -67,7 +67,7 @@ class BulkyGarbageFacilityServiceImplTest {
         when(modelMapper.map(eq(entityList), any(Type.class))).thenReturn(dtoList);
 
         // Act
-        List<BulkyGarbageFacilityDTO> result = service.fetchFacilities(prefectureNo);
+        List<BulkyGarbageFacilityDTO> result = service.searchFacilities(prefectureNo);
 
         // Assert
         assertEquals(1, result.size());
@@ -83,7 +83,7 @@ class BulkyGarbageFacilityServiceImplTest {
     }
 
     @Test
-    public void testFetchFacilities_multipleFacilities() {
+    public void searchFacilities_multipleFacilities() {
         // Arrange
         Integer prefectureNo = 3;
 
@@ -102,7 +102,7 @@ class BulkyGarbageFacilityServiceImplTest {
         when(modelMapper.map(eq(entityList), any(Type.class))).thenReturn(dtoList);
 
         // Act
-        List<BulkyGarbageFacilityDTO> result = service.fetchFacilities(prefectureNo);
+        List<BulkyGarbageFacilityDTO> result = service.searchFacilities(prefectureNo);
 
         // Assert
         assertEquals(2, result.size());
