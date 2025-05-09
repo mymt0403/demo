@@ -57,10 +57,10 @@ class BulkyGarbageFacilityServiceImplTest {
         // Arrange
         Integer prefectureNo = 2;
 
-        BulkyGarbageFacility entity1 = createEntity(35.0f, 139.0f, "Shinjuku Eco Center", "Tokyo");
+        BulkyGarbageFacility entity1 = createEntity(35.0f, 139.0f, 10, "Tokyo");
         List<BulkyGarbageFacility> entityList = List.of(entity1);
 
-        BulkyGarbageFacilityDTO dto1 = createDTO(35.0f, 139.0f, "Shinjuku Eco Center", "Tokyo");
+        BulkyGarbageFacilityDTO dto1 = createDTO(35.0f, 139.0f, "Shinjuku Eco Center", 10);
         List<BulkyGarbageFacilityDTO> dtoList = List.of(dto1);
 
         when(bulkyGarbageFacilityRepository.findByPrefectureNo(prefectureNo)).thenReturn(entityList);
@@ -75,7 +75,7 @@ class BulkyGarbageFacilityServiceImplTest {
         BulkyGarbageFacilityDTO resultDto = result.get(0);
         assertEquals(35.0f, resultDto.getLatitude());
         assertEquals(139.0f, resultDto.getLongitude());
-        assertEquals("Tokyo", resultDto.getPrefectureName());
+        assertEquals(10, resultDto.getPrefectureNumber());
         assertEquals("Shinjuku Eco Center", resultDto.getFacilityName());
 
         verify(bulkyGarbageFacilityRepository).findByPrefectureNo(prefectureNo);
@@ -90,12 +90,12 @@ class BulkyGarbageFacilityServiceImplTest {
         Prefecture prefecture = new Prefecture();
         prefecture.setPrefectureName("Osaka");
 
-        BulkyGarbageFacility entity1 = createEntity(34.7f, 135.5f, "Osaka", "Osaka Facility A");
-        BulkyGarbageFacility entity2 = createEntity(34.8f, 135.6f, "Osaka", "Osaka Facility B");
+        BulkyGarbageFacility entity1 = createEntity(34.7f, 135.5f, 25, "Osaka Facility A");
+        BulkyGarbageFacility entity2 = createEntity(34.8f, 135.6f, 25, "Osaka Facility B");
         List<BulkyGarbageFacility> entityList = List.of(entity1, entity2);
 
-        BulkyGarbageFacilityDTO dto1 = createDTO(34.7f, 135.5f, "Osaka Facility A", "Osaka");
-        BulkyGarbageFacilityDTO dto2 = createDTO(34.8f, 135.6f, "Osaka Facility B", "Osaka");
+        BulkyGarbageFacilityDTO dto1 = createDTO(34.7f, 135.5f, "Osaka Facility A", 25);
+        BulkyGarbageFacilityDTO dto2 = createDTO(34.8f, 135.6f, "Osaka Facility B", 25);
         List<BulkyGarbageFacilityDTO> dtoList = List.of(dto1, dto2);
 
         when(bulkyGarbageFacilityRepository.findByPrefectureNo(prefectureNo)).thenReturn(entityList);
@@ -110,32 +110,32 @@ class BulkyGarbageFacilityServiceImplTest {
         BulkyGarbageFacilityDTO resultDto1 = result.get(0);
         assertEquals(34.7f, resultDto1.getLatitude());
         assertEquals(135.5f, resultDto1.getLongitude());
-        assertEquals("Osaka", resultDto1.getPrefectureName());
+        assertEquals(25, resultDto1.getPrefectureNumber());
         assertEquals("Osaka Facility A", resultDto1.getFacilityName());
 
         BulkyGarbageFacilityDTO resultDto2 = result.get(1);
         assertEquals(34.8f, resultDto2.getLatitude());
         assertEquals(135.6f, resultDto2.getLongitude());
-        assertEquals("Osaka", resultDto2.getPrefectureName());
+        assertEquals(25, resultDto2.getPrefectureNumber());
         assertEquals("Osaka Facility B", resultDto2.getFacilityName());
 
         verify(bulkyGarbageFacilityRepository).findByPrefectureNo(prefectureNo);
         verify(modelMapper).map(eq(entityList), any(Type.class));
     }
 
-    private BulkyGarbageFacility createEntity(float latitude, float longitude, String prefectureName, String facilityName) {
+    private BulkyGarbageFacility createEntity(float latitude, float longitude, int prefectureNumber, String facilityName) {
         Prefecture prefecture = new Prefecture();
-        prefecture.setPrefectureName(prefectureName);
+        prefecture.setNumber(prefectureNumber);
 
         return new BulkyGarbageFacility(latitude, longitude, prefecture, facilityName);
     }
 
-    private BulkyGarbageFacilityDTO createDTO(float latitude, float longitude, String facilityName, String prefectureName) {
+    private BulkyGarbageFacilityDTO createDTO(float latitude, float longitude, String facilityName, int prefectureNumber) {
         BulkyGarbageFacilityDTO dto = new BulkyGarbageFacilityDTO();
         dto.setLatitude(latitude);
         dto.setLongitude(longitude);
         dto.setFacilityName(facilityName);
-        dto.setPrefectureName(prefectureName);
+        dto.setPrefectureNumber(prefectureNumber);
         return dto;
     }
 }
