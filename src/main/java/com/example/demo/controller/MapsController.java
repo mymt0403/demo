@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.BulkyGarbageFacilityDTO;
+import com.example.demo.model.Position;
 import com.example.demo.service.BulkyGarbageFacilityService;
 import com.example.demo.service.PrefectureService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +31,8 @@ public class MapsController {
     }
 
     @GetMapping("/api/center/{prefectureNo}")
-    public ResponseEntity<List<Float>> fetchCenter(Model model, @PathVariable("prefectureNo") int prefectureNo) {
-        List<Float> centerPosition = prefectureService.fetchCenterPosition(prefectureNo);
+    public ResponseEntity<Position> getCenterPosition(Model model, @PathVariable("prefectureNo") int prefectureNo) {
+        Position centerPosition = prefectureService.getCenterPosition(prefectureNo);
         return ResponseEntity.ok(centerPosition);
     }
 

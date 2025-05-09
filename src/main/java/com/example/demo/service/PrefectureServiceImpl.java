@@ -1,14 +1,10 @@
 package com.example.demo.service;
 
-import com.example.demo.model.Prefecture;
+import com.example.demo.model.Position;
 import com.example.demo.repository.PrefectureRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class PrefectureServiceImpl implements PrefectureService {
@@ -21,18 +17,10 @@ public class PrefectureServiceImpl implements PrefectureService {
     PrefectureRepository prefectureRepository;
 
     @Override
-    public List<Float> fetchCenterPosition(int prefectureNo) {
-        Optional<Prefecture> prefecture = prefectureRepository.findById(prefectureNo);
-        List<Float> centerPosition = new ArrayList<>();
-        // 取得した都道府県情報から緯度と経度のみを取り出す
-        prefecture.ifPresentOrElse(x ->{
-            centerPosition.add(x.getDefaultLatitude());
-            centerPosition.add(x.getDefaultLongitude());
-        }, () -> {
-            // 値が取得できなかった場合は東京の座標を返す
-            centerPosition.add(tokyoLatitude);
-            centerPosition.add(tokyoLongitude);
-        });
-        return centerPosition;
+    public Position getCenterPosition(int prefectureNo) {
+        return prefectureRepository.findById(prefectureNo)
+                .map(prefecture -> new Position(prefecture.getDefaultLatitude(), prefecture.getDefaultLongitude()))
+                // 値が取得できなかった場合は東京の座標を返す
+                .orElse(new Position(tokyoLatitude, tokyoLongitude));
     }
 }
