@@ -37,8 +37,8 @@ public class MapsController {
     }
 
     @GetMapping("/api/data/{prefectureNo}")
-    public ResponseEntity<List<BulkyGarbageFacilityDTO>> fetchData(Model model, @PathVariable("prefectureNo") int prefectureNo) {
-        List<BulkyGarbageFacilityDTO> dataList = bulkyGarbageFacilityService.fetchFacilities(prefectureNo);
+    public ResponseEntity<List<BulkyGarbageFacilityDTO>> searchFacilities(Model model, @PathVariable("prefectureNo") int prefectureNo) {
+        List<BulkyGarbageFacilityDTO> dataList = bulkyGarbageFacilityService.searchFacilities(prefectureNo);
         return ResponseEntity.ok(dataList);
     }
 }

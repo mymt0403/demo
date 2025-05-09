@@ -18,7 +18,7 @@ public class BulkyGarbageFacilityServiceImpl implements BulkyGarbageFacilityServ
     BulkyGarbageFacilityRepository bulkyGarbageFacilityRepository;
 
     @Override
-    public List<BulkyGarbageFacilityDTO> fetchFacilities(Integer prefectureNo) {
+    public List<BulkyGarbageFacilityDTO> searchFacilities(Integer prefectureNo) {
         List<BulkyGarbageFacility> facilities = bulkyGarbageFacilityRepository.findByPrefectureNo(prefectureNo);
         // 取得したデータをDTOに詰め替える
         return modelMapper.map(facilities, new TypeToken<List<BulkyGarbageFacilityDTO>>(){}.getType());
