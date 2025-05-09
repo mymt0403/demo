@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.model.BulkyGarbageFacility;
+import com.example.demo.entity.BulkyGarbageFacility;
 import com.example.demo.model.BulkyGarbageFacilityDTO;
 import com.example.demo.repository.BulkyGarbageFacilityRepository;
 import org.modelmapper.ModelMapper;
