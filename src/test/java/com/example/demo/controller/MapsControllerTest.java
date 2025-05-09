@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.BulkyGarbageFacilityDTO;
+import com.example.demo.model.Position;
 import com.example.demo.service.BulkyGarbageFacilityService;
 import com.example.demo.service.PrefectureService;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.ui.Model;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -57,15 +57,15 @@ class MapsControllerTest {
     void fetchCenter_returnsCenterPositionFromService() {
         // Arrange
         int prefectureNo = 1;
-        List<Float> mockCenter = Arrays.asList(35.0f, 135.0f);
-        when(prefectureService.fetchCenterPosition(prefectureNo)).thenReturn(mockCenter);
+        Position mockCenterPosition = new Position(35.0f, 135.0f);
+        when(prefectureService.getCenterPosition(prefectureNo)).thenReturn(mockCenterPosition);
 
         // Act
-        ResponseEntity<List<Float>> response = mapsController.fetchCenter(model, prefectureNo);
+        ResponseEntity<Position> response = mapsController.getCenterPosition(model, prefectureNo);
 
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(mockCenter, response.getBody());
+        assertEquals(mockCenterPosition, response.getBody());
     }
 
     @Test

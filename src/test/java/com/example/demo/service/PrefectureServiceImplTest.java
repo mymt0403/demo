@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
-import com.example.demo.model.Prefecture;
+import com.example.demo.entity.Prefecture;
+import com.example.demo.model.Position;
 import com.example.demo.repository.PrefectureRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -9,7 +10,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Value;
 
-import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -31,7 +31,7 @@ class PrefectureServiceImplTest {
     private Float TOKYO_LONG;
 
     @Test
-    public void fetchCenterPosition_prefectureExists() {
+    public void getCenterPosition_prefectureExists() {
         // Arrange
         Prefecture prefecture = mock(Prefecture.class);
         when(prefecture.getDefaultLatitude()).thenReturn(43.06417f);
@@ -39,25 +39,23 @@ class PrefectureServiceImplTest {
         when(prefectureRepository.findById(1)).thenReturn(Optional.of(prefecture));
 
         // Act
-        List<Float> result = prefectureService.fetchCenterPosition(1);
+        Position result = prefectureService.getCenterPosition(1);
 
         // Assert
-        assertEquals(2, result.size());
-        assertEquals(43.06417f, result.get(0));
-        assertEquals(141.34694f, result.get(1));
+        assertEquals(43.06417f, result.getLatitude());
+        assertEquals(141.34694f, result.getLatitude());
     }
 
     @Test
-    public void fetchCenterPosition_prefectureNotFound() {
+    public void getCenterPosition_prefectureNotFound() {
         // Arrange
         when(prefectureRepository.findById(999)).thenReturn(Optional.empty());
 
         // Act
-        List<Float> result = prefectureService.fetchCenterPosition(999);
+        Position result = prefectureService.getCenterPosition(999);
 
         // Assert
-        assertEquals(2, result.size());
-        assertEquals(TOKYO_LAT, result.get(0));
-        assertEquals(TOKYO_LONG, result.get(1));
+        assertEquals(TOKYO_LAT, result.getLatitude());
+        assertEquals(TOKYO_LONG, result.getLatitude());
     }
 }
