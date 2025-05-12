@@ -1,65 +1,19 @@
 package com.example.demo.repository;
 
-import com.example.demo.model.BulkyGarbageFacility;
+import com.example.demo.entity.BulkyGarbageFacility;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
-public class BulkyGarbageFacilityRepository {
+@Repository
+public interface BulkyGarbageFacilityRepository extends JpaRepository<BulkyGarbageFacility, Integer> {
 
-    public static Connection conn(String db_url, String db_user, String db_password) throws SQLException {
-        return DriverManager.getConnection(db_url, db_user, db_password);
-    }
-
-    public static void insertFacility(Connection connection, int latitude, int longitude, String prefecture, String facilityName) throws SQLException {
-        String insertSQL = "INSERT INTO BULKY_GARBAGE_FACILITIES (LATITUDE, LONGITUDE, PREFECTURE, FACILITY_NAME) VALUES (?, ?, ?, ?)";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(insertSQL)) {
-            preparedStatement.setInt(1, latitude);
-            preparedStatement.setInt(2, longitude);
-            preparedStatement.setString(3, prefecture);
-            preparedStatement.setString(4, facilityName);
-            preparedStatement.executeUpdate();
-        }
-    }
-
-    public static List<BulkyGarbageFacility> fetchFacilities(Connection connection, int id) throws SQLException {
-        String selectSQL = "SELECT LATITUDE, LONGITUDE, P.PREFECTURE_NAME, FACILITY_NAME FROM BULKY_GARBAGE_FACILITIES AS BGF INNER JOIN PREFECTURES AS P ON P.NUMBER = BGF.PREFECTURE_NO WHERE P.NUMBER = ?";
-        List<BulkyGarbageFacility> facilities = new ArrayList<>();
-        try (PreparedStatement ps = connection.prepareStatement(selectSQL)){
-            ps.setInt(1, id);
-            try(ResultSet resultSet = ps.executeQuery()) {
-                while (resultSet.next()) {
-                    float latitude = resultSet.getFloat("LATITUDE");
-                    float longitude = resultSet.getFloat("LONGITUDE");
-                    String prefecture = resultSet.getString("PREFECTURE_NAME");
-                    String facilityName = resultSet.getString("FACILITY_NAME");
-                    BulkyGarbageFacility facility = new BulkyGarbageFacility(latitude, longitude, prefecture, facilityName);
-                    facilities.add(facility);
-                }
-            }
-        }
-        return facilities;
-    }
-
-    public static List<Float> fetchCenter(Connection connection, int id) throws SQLException{
-        String selectSQL = "SELECT DEFAULT_LATITUDE, DEFAULT_LONGITUDE FROM PREFECTURES WHERE NUMBER = ?";
-        List<Float> centerPosition = new ArrayList<>();
-        try (PreparedStatement ps = connection.prepareStatement(selectSQL)){
-            ps.setInt(1, id);
-            try(ResultSet resultSet = ps.executeQuery()) {
-                while (resultSet.next()) {
-                    float defaultLatitude = resultSet.getFloat("DEFAULT_LATITUDE");
-                    float defaultLongitude = resultSet.getFloat("DEFAULT_LONGITUDE");
-                    centerPosition.add(defaultLatitude);
-                    centerPosition.add(defaultLongitude);
-                }
-            }
-        }
-        return centerPosition;
-    }
+    @Query("SELECT b " +
+            "FROM BulkyGarbageFacility b " +
+            "INNER JOIN FETCH b.prefecture " +
+            "WHERE b.prefecture.number = :prefectureNo")
+    List<BulkyGarbageFacility> findByPrefectureNo(@Param("prefectureNo") Integer prefectureNo);
 }

@@ -1,27 +1,28 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.BulkyGarbageFacility;
-import com.example.demo.repository.BulkyGarbageFacilityRepository;
+import com.example.demo.model.BulkyGarbageFacilityDTO;
+import com.example.demo.model.Position;
+import com.example.demo.service.BulkyGarbageFacilityService;
+import com.example.demo.service.PrefectureService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 
 @Controller
 public class MapsController {
     @Value("${api.key}")
     private String apiKey;
-    @Value("${spring.datasource.url}")
-    private String db_url;
-    @Value("${spring.datasource.username}")
-    private String db_user;
-    @Value("${spring.datasource.password}")
-    private String db_password;
+
+    @Autowired
+    BulkyGarbageFacilityService bulkyGarbageFacilityService;
+    @Autowired
+    PrefectureService prefectureService;
 
     @GetMapping("/")
     public String init(Model model) {
@@ -29,17 +30,15 @@ public class MapsController {
         return "index";
     }
 
-    @GetMapping("/api/center/{id}")
-    public ResponseEntity<List<Float>> fetchCenter(Model model, @PathVariable("id") int id) throws SQLException {
-        Connection conn = BulkyGarbageFacilityRepository.conn(db_url, db_user, db_password);
-        List<Float> centerPosition = BulkyGarbageFacilityRepository.fetchCenter(conn, id);
+    @GetMapping("/api/center/{prefectureNo}")
+    public ResponseEntity<Position> getCenterPosition(Model model, @PathVariable("prefectureNo") int prefectureNo) {
+        Position centerPosition = prefectureService.getCenterPosition(prefectureNo);
         return ResponseEntity.ok(centerPosition);
     }
 
-    @GetMapping("/api/data/{id}")
-    public ResponseEntity<List<BulkyGarbageFacility>> fetchData(Model model, @PathVariable("id") int id) throws SQLException {
-        Connection conn = BulkyGarbageFacilityRepository.conn(db_url, db_user, db_password);
-        List<BulkyGarbageFacility> dataList = BulkyGarbageFacilityRepository.fetchFacilities(conn, id);
+    @GetMapping("/api/data/{prefectureNo}")
+    public ResponseEntity<List<BulkyGarbageFacilityDTO>> searchFacilities(Model model, @PathVariable("prefectureNo") int prefectureNo) {
+        List<BulkyGarbageFacilityDTO> dataList = bulkyGarbageFacilityService.searchFacilities(prefectureNo);
         return ResponseEntity.ok(dataList);
     }
 }

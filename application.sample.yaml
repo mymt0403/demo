@@ -21,9 +21,14 @@ spring:
       enabled: true
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
+    # 起動時にEntityに対応するテーブルがなければ作成する
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
 
 # GoogleMap Api Key
 api:
   key: your api key token
+
+default:
+  tokyo-lat: 35.68168615415703F
+  tokyo-long: 139.76705199614096F
