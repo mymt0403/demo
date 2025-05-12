@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "PREFECTURES")
+@Table(name = "PREFECTURE")
 public class Prefecture {
     @Id
     private Integer number; // 都道府県コード
