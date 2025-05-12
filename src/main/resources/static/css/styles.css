@@ -36,3 +36,9 @@
     margin-top: 10px;
     margin-bottom: 10px;
 }
+
+.facility-name {
+  font-weight: bold;
+  color: #d60000;
+  font-size: 1.2em;
+}

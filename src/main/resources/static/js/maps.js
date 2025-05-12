@@ -39,9 +39,11 @@ async function putPins(pins) {
             position: {
                 lat: pin.latitude,
                 lng: pin.longitude,
-            }
+            },
+            title: pin.facilityName,
         });
     });
+    displayFacilities(pins);
 }
 
 function showUserLocation() {
@@ -93,6 +95,47 @@ function handleLocationError() {
         <p>位置情報が取得できませんでした。<br>
         位置情報を表示させる場合はブラウザの設定から位置情報へのアクセスを許可してください。</p>`;
     errorMessageElement.style.display = "inline";
+}
+
+function displayFacilities(facilities) {
+    const listContainer = document.getElementById("facility-list");
+    listContainer.innerHTML = '';
+
+    if (!Array.isArray(facilities) || facilities.length === 0) {
+        listContainer.textContent = '※対象の施設は見つかりませんでした。';
+        return;
+    }
+
+    facilities.forEach(facility => {
+        const div = document.createElement('div');
+        const name = document.createElement('div');
+        const hr = document.createElement('hr');
+        const addressDiv = document.createElement('div');
+        const position = document.createElement('div');
+        const mapLink = document.createElement('a');
+
+        const addressText = document.createTextNode(`住所: XXXX県XXXX市XXXX区XXXX1丁目1-1（`);
+        const closingParen = document.createTextNode('）');
+
+        name.textContent = facility.facilityName;
+        name.className = 'facility-name';
+        position.textContent = `緯度: \${facility.latitude}, 経度: \${facility.longitude}`;
+        mapLink.href = `https://maps.app.goo.gl/MCJ5kfdCB4RfP6Ea8`;
+        mapLink.textContent = `GoogleMapで見る`
+        mapLink.target = '_blank';
+
+        addressDiv.appendChild(addressText);
+        addressDiv.appendChild(mapLink);
+        addressDiv.appendChild(closingParen);
+
+        // 表示
+        div.appendChild(name);
+        div.appendChild(addressDiv);
+        div.appendChild(position);
+        div.appendChild(addressDiv);
+        div.appendChild(hr);
+        listContainer.appendChild(div);
+    });
 }
 
 window.onload = function() {
