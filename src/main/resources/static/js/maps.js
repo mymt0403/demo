@@ -33,7 +33,8 @@ function fetchData() {
 
 async function putPins(pins) {
     const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
-    pins.forEach(pin => {
+    const { PinElement } = google.maps.importLibrary("marker");
+    pins.forEach((pin, i) => {
         new AdvancedMarkerElement({
             map: map,
             position: {
@@ -41,6 +42,11 @@ async function putPins(pins) {
                 lng: pin.longitude,
             },
             title: pin.facilityName,
+            content: new google.maps.marker.PinElement({
+                glyph: `\${i + 1}`,
+                glyphColor: "white",
+                scale: 1,
+            }).element,
         });
     });
     displayFacilities(pins);
@@ -106,7 +112,7 @@ function displayFacilities(facilities) {
         return;
     }
 
-    facilities.forEach(facility => {
+    facilities.forEach((facility, i) => {
         const div = document.createElement('div');
         const name = document.createElement('div');
         const hr = document.createElement('hr');
@@ -114,21 +120,22 @@ function displayFacilities(facilities) {
         const position = document.createElement('div');
         const mapLink = document.createElement('a');
 
-        const addressText = document.createTextNode(`住所: XXXX県XXXX市XXXX区XXXX1丁目1-1（`);
+        const addressText = document.createTextNode(`住所: \${facility.address}（`);
         const closingParen = document.createTextNode('）');
 
-        name.textContent = facility.facilityName;
+        name.textContent = `\${i + 1}. \${facility.facilityName} (\${facility.garbageTypeName})`;
         name.className = 'facility-name';
         position.textContent = `緯度: \${facility.latitude}, 経度: \${facility.longitude}`;
-        mapLink.href = `https://maps.app.goo.gl/MCJ5kfdCB4RfP6Ea8`;
+        mapLink.href = `\${facility.mapUrl}`;
         mapLink.textContent = `GoogleMapで見る`
         mapLink.target = '_blank';
 
+        // 住所表示
         addressDiv.appendChild(addressText);
         addressDiv.appendChild(mapLink);
         addressDiv.appendChild(closingParen);
 
-        // 表示
+        // リスト表示
         div.appendChild(name);
         div.appendChild(addressDiv);
         div.appendChild(position);
