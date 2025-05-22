@@ -33,15 +33,23 @@ function fetchData() {
 
 async function putPins(pins) {
     const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
-    pins.forEach(pin => {
+    const { PinElement } = google.maps.importLibrary("marker");
+    pins.forEach((pin, i) => {
         new AdvancedMarkerElement({
             map: map,
             position: {
                 lat: pin.latitude,
                 lng: pin.longitude,
-            }
+            },
+            title: pin.facilityName,
+            content: new google.maps.marker.PinElement({
+                glyph: `\${i + 1}`,
+                glyphColor: "white",
+                scale: 1,
+            }).element,
         });
     });
+    displayFacilities(pins);
 }
 
 function showUserLocation() {
@@ -93,6 +101,48 @@ function handleLocationError() {
         <p>位置情報が取得できませんでした。<br>
         位置情報を表示させる場合はブラウザの設定から位置情報へのアクセスを許可してください。</p>`;
     errorMessageElement.style.display = "inline";
+}
+
+function displayFacilities(facilities) {
+    const listContainer = document.getElementById("facility-list");
+    listContainer.innerHTML = '';
+
+    if (!Array.isArray(facilities) || facilities.length === 0) {
+        listContainer.textContent = '※対象の施設は見つかりませんでした。';
+        return;
+    }
+
+    facilities.forEach((facility, i) => {
+        const div = document.createElement('div');
+        const name = document.createElement('div');
+        const hr = document.createElement('hr');
+        const addressDiv = document.createElement('div');
+        const position = document.createElement('div');
+        const mapLink = document.createElement('a');
+
+        const addressText = document.createTextNode(`住所: \${facility.address}（`);
+        const closingParen = document.createTextNode('）');
+
+        name.textContent = `\${i + 1}. \${facility.facilityName} (\${facility.garbageTypeName})`;
+        name.className = 'facility-name';
+        position.textContent = `緯度: \${facility.latitude}, 経度: \${facility.longitude}`;
+        mapLink.href = `\${facility.mapUrl}`;
+        mapLink.textContent = `GoogleMapで見る`
+        mapLink.target = '_blank';
+
+        // 住所表示
+        addressDiv.appendChild(addressText);
+        addressDiv.appendChild(mapLink);
+        addressDiv.appendChild(closingParen);
+
+        // リスト表示
+        div.appendChild(name);
+        div.appendChild(addressDiv);
+        div.appendChild(position);
+        div.appendChild(addressDiv);
+        div.appendChild(hr);
+        listContainer.appendChild(div);
+    });
 }
 
 window.onload = function() {

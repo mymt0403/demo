@@ -24,6 +24,14 @@ public class BulkyGarbageFacility {
 
     @Column(name = "FACILITY_NAME")
     private String facilityName; // 施設名
+    private String address; // 住所
+    @Column(name = "MAP_URL")
+    private String mapUrl; // GoogleMapのリンク
+
+    // facility の複数レコードに対して prefecture は1レコード紐づく(多対1の関係)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "GARBAGE_TYPE_ID")
+    private GarbageType garbageType;
 
     // 循環参照によるStackOverFlowを防止
     @Override
@@ -34,7 +42,12 @@ public class BulkyGarbageFacility {
                     "prefecture=Prefecture{" +
                         "prefectureName=" + prefecture.getPrefectureName() +
                     "}" + "," +
-                    "facilityName=" + facilityName +
+                    "facilityName=" + facilityName + "," +
+                    "address=" + address + "," +
+                    "mapUrl=" + mapUrl + "," +
+                    "garbageType=GarbageType{" +
+                        "garbageTypeName=" + garbageType.getTypeName() +
+                    "}" +
                 "}";
     }
 }
