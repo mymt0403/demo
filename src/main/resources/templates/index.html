@@ -11,7 +11,7 @@
     <section class="title">
         <h1>粗大ごみ持込可能施設 一覧</h1>
     </section>
-    <section class="function">
+    <section class="search">
         <div class="container">
             <select id="mySelect">
                 <option value="40">福岡県</option>
@@ -30,9 +30,14 @@
             <span id="errorMessage" class="error-message"></span>
         </div>
     </section>
-    <section class="googleMap">
-        <div id="content"></div>
-        <div id="map" style="height: 700px; width: 65%;"></div>
+    <section class="info">
+        <div class="googleMap">
+            <div id="map" style="height: 100%; width: 100%;"></div>
+        </div>
+        <div class="selectedFacilities">
+            <h3>選択した都道府県内の施設</h3>
+            <div id="facility-list"></div>
+        </div>
     </section>
 </body>
 </html>

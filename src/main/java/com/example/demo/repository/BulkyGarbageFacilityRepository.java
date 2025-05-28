@@ -14,6 +14,7 @@ public interface BulkyGarbageFacilityRepository extends JpaRepository<BulkyGarba
     @Query("SELECT b " +
             "FROM BulkyGarbageFacility b " +
             "INNER JOIN FETCH b.prefecture " +
+            "INNER JOIN FETCH b.prefecture " +
             "WHERE b.prefecture.number = :prefectureNo")
     List<BulkyGarbageFacility> findByPrefectureNo(@Param("prefectureNo") Integer prefectureNo);
 }
