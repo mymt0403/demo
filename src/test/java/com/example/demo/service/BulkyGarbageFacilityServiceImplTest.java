@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.entity.BulkyGarbageFacility;
+import com.example.demo.entity.GarbageType;
 import com.example.demo.model.BulkyGarbageFacilityDTO;
 import com.example.demo.entity.Prefecture;
 import com.example.demo.repository.BulkyGarbageFacilityRepository;
@@ -57,7 +58,7 @@ class BulkyGarbageFacilityServiceImplTest {
         // Arrange
         Integer prefectureNo = 2;
 
-        BulkyGarbageFacility entity1 = createEntity(35.0f, 139.0f, 10, "Tokyo");
+        BulkyGarbageFacility entity1 = createEntity(35.0f, 139.0f, 10, "Tokyo", "test", "testLink", new GarbageType());
         List<BulkyGarbageFacility> entityList = List.of(entity1);
 
         BulkyGarbageFacilityDTO dto1 = createDTO(35.0f, 139.0f, "Shinjuku Eco Center", 10);
@@ -90,8 +91,8 @@ class BulkyGarbageFacilityServiceImplTest {
         Prefecture prefecture = new Prefecture();
         prefecture.setPrefectureName("Osaka");
 
-        BulkyGarbageFacility entity1 = createEntity(34.7f, 135.5f, 25, "Osaka Facility A");
-        BulkyGarbageFacility entity2 = createEntity(34.8f, 135.6f, 25, "Osaka Facility B");
+        BulkyGarbageFacility entity1 = createEntity(34.7f, 135.5f, 25, "Osaka Facility A", "testA", "testLinkA", new GarbageType());
+        BulkyGarbageFacility entity2 = createEntity(34.8f, 135.6f, 25, "Osaka Facility B", "testB", "testLinkB", new GarbageType());
         List<BulkyGarbageFacility> entityList = List.of(entity1, entity2);
 
         BulkyGarbageFacilityDTO dto1 = createDTO(34.7f, 135.5f, "Osaka Facility A", 25);
@@ -123,11 +124,11 @@ class BulkyGarbageFacilityServiceImplTest {
         verify(modelMapper).map(eq(entityList), any(Type.class));
     }
 
-    private BulkyGarbageFacility createEntity(float latitude, float longitude, int prefectureNumber, String facilityName) {
+    private BulkyGarbageFacility createEntity(float latitude, float longitude, int prefectureNumber, String facilityName, String address, String mapUrl, GarbageType garbageType) {
         Prefecture prefecture = new Prefecture();
         prefecture.setNumber(prefectureNumber);
 
-        return new BulkyGarbageFacility(latitude, longitude, prefecture, facilityName);
+        return new BulkyGarbageFacility(latitude, longitude, prefecture, facilityName, address, mapUrl, garbageType);
     }
 
     private BulkyGarbageFacilityDTO createDTO(float latitude, float longitude, String facilityName, int prefectureNumber) {
