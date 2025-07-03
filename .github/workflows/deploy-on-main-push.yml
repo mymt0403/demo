@@ -3,7 +3,7 @@ name: Java CI with Gradle and Deploy to EC2
 on:
   push:
     branches:
-      - main
+      - add-workflow
   workflow_dispatch:
 
 jobs:
