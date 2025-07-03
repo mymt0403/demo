@@ -9,10 +9,6 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    env:
-      API_KEY: ${{ secrets.API_KEY }}
-      DB_USER: ${{ secrets.DB_USER }}
-      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
 
     steps:
     - uses: actions/checkout@v4
@@ -49,4 +45,7 @@ jobs:
         key: ${{ secrets.PRIVATE_KEY }}
         script: |
           pkill -f 'java -jar' || true
+          export API_KEY="${{ secrets.API_KEY }}"
+          export API_KEY="${{ secrets.DB_USER }}"
+          export API_KEY="${{ secrets.DB_PASSWORD }}"
           nohup java -jar /home/${{ secrets.EC2_USER_NAME }}/app/build/libs/demo-0.0.1-SNAPSHOT.jar > /home/${{ secrets.EC2_USER_NAME }}/app/app.log 2>&1 &
