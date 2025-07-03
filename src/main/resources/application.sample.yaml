@@ -1,0 +1,34 @@
+spring:
+  application:
+    name: demo
+
+  # Thymeleaf setting
+  thymeleaf:
+    enabled: true
+    prefix: classpath:/templates/
+    spring:
+      thymeleaf:
+        suffix: .html
+
+  # H2Database setting
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: YOUR_DB_USERNAME
+    password: YOUR_DB_PASSWORD
+  h2:
+    console:
+      enabled: true
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    # 起動時にEntityに対応するテーブルがなければ作成する
+    hibernate:
+      ddl-auto: update
+
+# GoogleMap API Key (not actual key)
+api:
+  key: YOUR_GOOGLE_MAP_API_KEY
+
+default:
+  tokyo-lat: 35.68168615415703F
+  tokyo-long: 139.76705199614096F
