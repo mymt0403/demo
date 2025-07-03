@@ -25,7 +25,7 @@ spring:
     hibernate:
       ddl-auto: update
 
-# GoogleMap API Key
+# GoogleMap Api Key
 api:
   key: your api key token
 
