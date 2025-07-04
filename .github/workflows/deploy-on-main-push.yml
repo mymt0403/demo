@@ -45,8 +45,8 @@ jobs:
             datasource:
               url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
               driver-class-name: org.h2.Driver
-              username: ${{ secrets.APP_DB_USERNAME }}
-              password: ${{ secrets.APP_DB_PASSWORD }}
+              username: ${{ secrets.DB_USER }}
+              password: ${{ secrets.DB_PASSWORD }}
             h2:
               console:
                 enabled: true
@@ -56,9 +56,9 @@ jobs:
               hibernate:
                 ddl-auto: update
           
-          # GoogleMap API Key (not actual key)
+          # GoogleMap API Key
           api:
-            key: ${{ secrets.APP_GOOGLE_MAP_API_KEY }}
+            key: ${{ secrets.API_KEY }}
           
           default:
             tokyo-lat: 35.68168615415703F
