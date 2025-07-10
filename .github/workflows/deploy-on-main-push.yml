@@ -56,6 +56,9 @@ jobs:
               hibernate:
                 ddl-auto: none
               show-sql: true
+            sql:
+              init:
+                mode: always
           
           # GoogleMap API Key
           api:
