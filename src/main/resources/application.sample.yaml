@@ -10,20 +10,19 @@ spring:
       thymeleaf:
         suffix: .html
 
-  # H2Database setting
+  # PostgreSQL setting
   datasource:
-    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-    driver-class-name: org.h2.Driver
+    url: your url
+    driver-class-name: org.postgresql.Driver
     username: your username
     password: your password
-  h2:
-    console:
-      enabled: true
+
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     # 起動時にEntityに対応するテーブルがなければ作成する
     hibernate:
       ddl-auto: update
+    show-sql: true
 
 # GoogleMap Api Key
 api:
