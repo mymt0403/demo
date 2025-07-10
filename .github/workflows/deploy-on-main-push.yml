@@ -54,7 +54,7 @@ jobs:
               database-platform: org.hibernate.dialect.PostgreSQLDialect
               # 起動時にEntityに対応するテーブルがなければ作成する
               hibernate:
-                ddl-auto: update
+                ddl-auto: none
               show-sql: true
           
           # GoogleMap API Key
