@@ -3,8 +3,10 @@ name: Java CI with Gradle and Deploy to EC2
 on:
   push:
     branches:
-      - add-workflow
-  workflow_dispatch:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   build-and-deploy:
@@ -41,20 +43,22 @@ jobs:
                 thymeleaf:
                   suffix: .html
           
-            # H2Database setting
+            # PostgreSQL setting
             datasource:
-              url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-              driver-class-name: org.h2.Driver
+              url: ${{ secrets.DB_URL }}
+              driver-class-name: org.postgresql.Driver
               username: ${{ secrets.DB_USER }}
               password: ${{ secrets.DB_PASSWORD }}
-            h2:
-              console:
-                enabled: true
+
             jpa:
-              database-platform: org.hibernate.dialect.H2Dialect
+              database-platform: org.hibernate.dialect.PostgreSQLDialect
               # 起動時にEntityに対応するテーブルがなければ作成する
               hibernate:
-                ddl-auto: update
+                ddl-auto: none
+              show-sql: true
+            sql:
+              init:
+                mode: always
           
           # GoogleMap API Key
           api:
