@@ -3,8 +3,10 @@ name: Java CI with Gradle and Deploy to EC2
 on:
   push:
     branches:
-      - feature.dbaccess-env-fix
-  workflow_dispatch:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   build-and-deploy:
@@ -47,9 +49,7 @@ jobs:
               driver-class-name: org.postgresql.Driver
               username: ${{ secrets.DB_USER }}
               password: ${{ secrets.DB_PASSWORD }}
-            h2:
-              console:
-                enabled: true
+
             jpa:
               database-platform: org.hibernate.dialect.PostgreSQLDialect
               # 起動時にEntityに対応するテーブルがなければ作成する
