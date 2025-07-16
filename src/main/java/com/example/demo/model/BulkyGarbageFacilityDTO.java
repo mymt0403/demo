@@ -1,6 +1,5 @@
 package com.example.demo.model;
 
-import jakarta.persistence.Column;
 import lombok.Data;
 
 @Data
