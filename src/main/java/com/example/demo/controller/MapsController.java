@@ -50,7 +50,6 @@ public class MapsController {
     public ResponseEntity<String> addFacility(@RequestBody BulkyGarbageFacilityInsertDTO facility) {
         try {
             bulkyGarbageFacilityService.addFacility(facility);
-            logger.info("で");
             return ResponseEntity.ok("登録成功");
         } catch (DataIntegrityViolationException e) {
             logger.error("データベース制約違反が発生しました。", e);
